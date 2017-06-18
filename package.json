@@ -1,0 +1,37 @@
+{
+  "name": "enhanced-map",
+  "version": "0.0.1",
+  "description": "Javascript map class extended to make some common use cases easier (default values, normalizing keys).",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src --out-dir dist",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seanjallen/enhanced-map.git"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "keywords": [
+    "javascript",
+    "map",
+    "default",
+    "values",
+    "normalize",
+    "keys"
+  ],
+  "author": "Sean Allen",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/seanjallen/enhanced-map/issues"
+  },
+  "homepage": "https://github.com/seanjallen/enhanced-map#readme",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1"
+  }
+}
