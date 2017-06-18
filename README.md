@@ -53,7 +53,7 @@ const myMap = new EnhancedMap(options);
 
 myMap.set('hi', 2);
 console.log(myMap.get('hello')); // outputs 2
-myMap.has('hello'); // outputs true
+console.log(myMap.has('hello')); // outputs true
 myMap.set('hello', 7);
 console.log(myMap.get('hi')); // outputs 7
 console.log(myMap.size) // outputs 1
