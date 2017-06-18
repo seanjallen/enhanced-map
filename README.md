@@ -70,7 +70,7 @@ const options = {
     if (normalizedKey === 'hi') {
       return 'hello';
     } else {
-      return key;
+      return normalizedKey;
     }
   },
 };
