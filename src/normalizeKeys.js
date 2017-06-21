@@ -10,15 +10,16 @@ function environmentSupportsSymbols() {
   }
 }
 
+const wrapperTypes = [String, Boolean, Number];
+if (environmentSupportsSymbols()) {
+  wrapperTypes.push(Symbol);
+}
+
 /**
  * @param {*} key
  * @returns {boolean} - Whether or not this object is a javascript wrapper object wrapping a primitive type.
  */
 function isWrapperObject(key) {
-  const wrapperTypes = [String, Boolean, Number];
-  if (environmentSupportsSymbols()) {
-    wrapperTypes.push(Symbol);
-  }
   return wrapperTypes.some(wrapperType => key instanceof wrapperType);
 }
 
