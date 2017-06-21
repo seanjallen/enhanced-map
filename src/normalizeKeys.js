@@ -1,9 +1,24 @@
 /**
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol
+ * @returns {boolean} - Whether or not the currently running javascript environment supports the symbol type.
+ */
+function environmentSupportsSymbols() {
+  try {
+    return !!Symbol;
+  } catch(e) {
+    return false;
+  }
+}
+
+/**
  * @param {*} key
  * @returns {boolean} - Whether or not this object is a javascript wrapper object wrapping a primitive type.
  */
 function isWrapperObject(key) {
   const wrapperTypes = [String, Boolean, Number];
+  if (environmentSupportsSymbols()) {
+    wrapperTypes.push(Symbol);
+  }
   return wrapperTypes.some(wrapperType => key instanceof wrapperType);
 }
 
