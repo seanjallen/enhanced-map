@@ -1,3 +1,5 @@
+import { environmentSupportsSymbols } from './utils';
+
 /**
  * Certain environments do not allow extending the Map class using ES5 syntax because the Map class uses native code. Rather
  * than extend Map directly in ES5, this class is used as the parent class of EnhancedMap instead. It creates and holds a
@@ -17,7 +19,7 @@ class ES5MapProxy {
  */
 function getAllMapPropertiesToOverride() {
   const properties = Object.getOwnPropertyNames(Map.prototype).filter(name => name !== 'constructor');
-  if (Symbol && Symbol.iterator && Map.prototype[Symbol.iterator]) {
+  if (environmentSupportsSymbols() && Symbol.iterator && Map.prototype[Symbol.iterator]) {
     properties.push(Symbol.iterator);
   }
   return properties;
