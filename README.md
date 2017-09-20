@@ -32,9 +32,36 @@ const myMap = new EnhancedMap(options);
   This option can be used to normalize multiple different keys to the same value. See [normalizing keys section](#normalizing-keys) below for more details.
     
 ## <a name="normalizing-keys"></a>Normalizing Keys
-    
-By default, the map will normalize [javascript wrapper objects](https://developer.mozilla.org/en-US/docs/Glossary/Primitive#Primitive_wrapper_objects_in_JavaScript) to their corresponding primitive values (in a native map an equivalent wrapper object and primitive type value would result in two different key/value pairs present in the map, which is likely a subtle error).
-What this means is that [Map.get](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/get), [Map.has](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/has), and [Map.set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/set) will all call the given normalizeKeys function before processing the key in the map.
+
+### Motivation
+
+In a native map an equivalent wrapper object and primitive type value would result in two different key/value pairs present in the map, which is likely a subtle error. For example:
+
+```javascript
+const map = new Map(); // ES5 map
+const hello = new String('hello');
+map.set(hello, false);
+map.set(new String('hello'), true);
+map.get(hello); // => false
+map.get('hello'); // => undefined
+```
+
+### Default implementation
+
+By default, enhanced maps will normalize [javascript wrapper objects](https://developer.mozilla.org/en-US/docs/Glossary/Primitive#Primitive_wrapper_objects_in_JavaScript) to their corresponding primitive values. For example:
+
+```javascript
+const EnhancedMap = require('enhanced-map').Map;
+const enhancedMap = new EnhancedMap();
+const hello = new String('hello');
+enhancedMap.set(hello, true);
+enhancedMap.get(hello); // => true
+enhancedMap.get('hello') // => true
+```
+
+### Custom normalizeKeys function
+
+In an enhanced map, [Map.get](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/get), [Map.has](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/has), and [Map.set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/set) will all call the given normalizeKeys function before processing the key in the map.
 
 Example:
 
@@ -52,11 +79,11 @@ const options = {
 const myMap = new EnhancedMap(options);
 
 myMap.set('hi', 2);
-console.log(myMap.get('hello')); // outputs 2
-console.log(myMap.has('hello')); // outputs true
+myMap.get('hello'); // => 2
+myMap.has('hello'); // => true
 myMap.set('hello', 7);
-console.log(myMap.get('hi')); // outputs 7
-console.log(myMap.size) // outputs 1
+myMap.get('hi'); // => 7
+myMap.size // => 1
 ```
 
 If you want to wrap or extend the default normalization function, you can import it to get a handle on it:
