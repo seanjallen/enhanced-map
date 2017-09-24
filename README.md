@@ -35,10 +35,14 @@ const myMap = new EnhancedMap(options);
 
 ### Motivation
 
-In a native map an equivalent wrapper object and primitive type value would result in two different key/value pairs present in the map, which is likely a subtle error. For example:
+When using a map, it's not uncommon to have input coming from multiple sources that needs to be normalized so all code is querying the map with equivalent input. For example, trim whitespace on all string keys. Rather than have to explicitly call that normalization code throughout the codebase before touching the map, in an enhanced map [Map.get](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/get), [Map.has](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/has), and [Map.set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/set) will all call the given normalizeKeys function before processing the key in the map.
+
+### Default Implementation
+
+In a native map an equivalent [primitive wrapper object](https://developer.mozilla.org/en-US/docs/Glossary/Primitive#Primitive_wrapper_objects_in_JavaScript) and primitive type value would result in two different key/value pairs in the map, which is likely a subtle error. For example:
 
 ```javascript
-const map = new Map(); // ES5 map
+const map = new Map(); // Native javascript map
 const hello = new String('hello');
 map.set(hello, false);
 map.set(new String('hello'), true);
@@ -46,22 +50,19 @@ map.get(hello); // => false
 map.get('hello'); // => undefined
 ```
 
-### Default implementation
-
-By default, enhanced maps will normalize [javascript wrapper objects](https://developer.mozilla.org/en-US/docs/Glossary/Primitive#Primitive_wrapper_objects_in_JavaScript) to their corresponding primitive values. For example:
+By default, enhanced maps will normalize primitive wrapper objects to their corresponding primitive values, so the above example will have what is likely to be the intended outcome:
 
 ```javascript
 const EnhancedMap = require('enhanced-map').Map;
-const enhancedMap = new EnhancedMap();
+const myMap = new EnhancedMap();
 const hello = new String('hello');
-enhancedMap.set(hello, true);
-enhancedMap.get(hello); // => true
-enhancedMap.get('hello') // => true
+myMap.set(hello, false);
+myMap.set(new String('hello'), true);
+myMap.get(hello); // => true
+myMap.get('hello'); // => true
 ```
 
 ### Custom normalizeKeys function
-
-In an enhanced map, [Map.get](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/get), [Map.has](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/has), and [Map.set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/set) will all call the given normalizeKeys function before processing the key in the map.
 
 Example:
 
@@ -104,4 +105,9 @@ const options = {
 const myMap = new EnhancedMap(options);
 ```
 
-Pass `false` instead of a function if you want to turn off key normalization.
+Pass `false` instead of a function if you want to turn off key normalization:
+
+```javascript
+const EnhancedMap = require('enhanced-map').Map;
+const myMap = new EnhancedMap({ normalizeKeys: false });
+```
