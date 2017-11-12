@@ -1,6 +1,6 @@
 {
   "name": "enhanced-map",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "Javascript map class extended to make some common use cases easier (default values, normalizing keys).",
   "main": "dist/index.js",
   "scripts": {
